@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>高德地图 JSAPI v2.0 - 基础地图</title>
+  <style>
+    html, body, #container {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255,255,255,0.95);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: -apple-system, sans-serif;
+      font-size: 13px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <div class="info">🗺️ 高德地图 JSAPI v2.0 - 基础示例（上海）</div>
+  <div id="container"></div>
+
+  <!-- 1. 引入 loader -->
+  <script src="https://webapi.amap.com/loader.js"></script>
+  <script>
+    // 2. 安全密钥（必须放在 load 之前）
+    window._AMapSecurityConfig = {
+      securityJsCode: '5190b7e1a6820e9fa98504c3d85f4031',
+    };
+
+    AMapLoader.load({
+      key: '9f55d6b367370ab394fb4d00590b33aa',
+      version: '2.0',
+      plugins: ['AMap.Scale', 'AMap.ToolBar', 'AMap.ControlBar'],
+    }).then((AMap) => {
+      // 应用标识（API 调用来源统计）
+      AMap.getConfig().appname = 'amap-jsapi-skill';
+
+      // 3. 初始化地图
+      const map = new AMap.Map('container', {
+        viewMode: '3D',         // 3D 视图
+        zoom: 11,               // 缩放级别
+        center: [121.473, 31.230], // 上海外滩附近
+        pitch: 30,              // 俯仰角
+        rotation: 0,            // 旋转角
+      });
+
+      // 4. 加控件
+      map.addControl(new AMap.Scale());      // 比例尺
+      map.addControl(new AMap.ToolBar());    // 工具栏
+      map.addControl(new AMap.ControlBar()); // 3D 控制条
+
+      console.log('✅ 地图加载成功');
+    }).catch((e) => {
+      console.error('❌ 地图加载失败:', e);
+      document.getElementById('container').innerHTML =
+        '<div style="padding:20px;color:#c00;">地图加载失败：' + (e.message || e) + '</div>';
+    });
+  </script>
+</body>
+</html>
